@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/bharat-swasthy/static/css/main.4403255f.css",
+    "main.js": "/bharat-swasthy/static/js/main.eedf6557.js",
+    "static/js/453.67c91052.chunk.js": "/bharat-swasthy/static/js/453.67c91052.chunk.js",
+    "static/media/Gaurav_Garg_Profile.jpg": "/bharat-swasthy/static/media/Gaurav_Garg_Profile.6eee01c94b41737037a6.jpg",
+    "index.html": "/bharat-swasthy/index.html",
+    "main.4403255f.css.map": "/bharat-swasthy/static/css/main.4403255f.css.map",
+    "main.eedf6557.js.map": "/bharat-swasthy/static/js/main.eedf6557.js.map",
+    "453.67c91052.chunk.js.map": "/bharat-swasthy/static/js/453.67c91052.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4403255f.css",
+    "static/js/main.eedf6557.js"
+  ]
+}
