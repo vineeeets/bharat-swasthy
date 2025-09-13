@@ -1,7 +1,15 @@
-import './App.css'
+import './App.css';
+import './styles/components/about.css';
+import './styles/components/contact.css';
+import './styles/components/dashboard.css';
+import './styles/components/doctors.css';
+import './styles/components/footer.css';
+import './styles/components/header.css';
+import './styles/components/hero.css';
+import './styles/components/services.css';
+import './styles/components/testimonials.css';
 
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, Clock, Menu, X, Calendar, User, MessageSquare } from 'lucide-react';
 import Header from './components/Header';
 import About from './components/About';
 import Contact from './components/Contact';
