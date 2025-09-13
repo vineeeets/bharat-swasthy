@@ -1,3 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Migration: import plain CSS that replaces Tailwind utility usage */
+@import './styles/migration.css';
+
+/* You can add small project-level custom styles below */

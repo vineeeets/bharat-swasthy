@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Phone, MapPin, User, Copy, ChevronDown, ChevronUp } from 'lucide-react';
 import doctors from '../data/doctors';
+import '../styles/components/doctors.css';
 
 // Transcribed clinicians from provided handwritten images (surgeons + dermatologists)
 // doctors data is imported from src/data/doctors.js
@@ -53,26 +54,25 @@ const Doctors = () => {
   const toggleExpand = (id) => setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <section id="doctors" className="py-20 bg-yellow-50">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="text-center mb-6">
-          <span className="text-red-600 font-semibold">DOCTORS</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-2">Surgeons & Specialists</h2>
-          <p className="text-gray-600 mt-2">Search doctors by name, address or specialty. Use the dropdown to filter specialties.</p>
+    <section id="doctors">
+      <div className="doctors-container">
+        <div className="doctors-header">
+          <span className="sub-title">DOCTORS</span>
+          <h2 className="title">Surgeons & Specialists</h2>
+          <p>Search doctors by name, address or specialty. Use the dropdown to filter specialties.</p>
         </div>
 
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div className="flex-1">
+        <div className="doctors-filters">
+          <div className="search-input">
             <input
               type="search"
               placeholder="Search doctors, address or specialty..."
               value={query}
               onChange={e => setQuery(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-100 border-2 border-transparent focus:border-yellow-400 outline-none"
             />
           </div>
-          <div className="w-full md:w-64">
-            <select value={specialtyFilter} onChange={e => setSpecialtyFilter(e.target.value)} className="w-full p-3 rounded-lg bg-gray-100">
+          <div className="specialty-filter">
+            <select value={specialtyFilter} onChange={e => setSpecialtyFilter(e.target.value)}>
               {specialties.map(s => (
                 <option key={s} value={s}>{s === 'all' ? 'All Specialties' : s}</option>
               ))}
@@ -80,53 +80,55 @@ const Doctors = () => {
           </div>
         </div>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="doctors-grid">
           {filtered.length === 0 && (
-            <div className="col-span-full text-center text-gray-500 py-12">No doctors found for the current search/filter.</div>
+            <div className="no-doctors">No doctors found for the current search/filter.</div>
           )}
 
           {filtered.map(doc => (
-            <div key={doc.id} className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-              <div className="flex items-start justify-between">
+            <div key={doc.id} className="doctor-card">
+              <div className="doctor-card-header">
                 <div>
-                  <h3 className="text-lg font-bold">{doc.name}</h3>
-                  <p className="text-sm text-gray-600">{doc.specialties.join(' • ')}</p>
+                  <h3>{doc.name}</h3>
+                  <p>{doc.specialties.join(' • ')}</p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="doctor-actions">
                   {doc.phone ? (
-                    <a href={`tel:${doc.phone}`} className="text-red-600 bg-red-50 p-2 rounded-full hover:bg-red-100" title={`Call ${doc.phone}`}>
-                      <Phone size={18} />
+                    <a href={`tel:${doc.phone}`} className="action-btn phone-btn" title={`Call ${doc.phone}`}>
+                      <Phone size={18} className="green-icon" />
                     </a>
                   ) : (
-                    <div className="text-gray-400 p-2 rounded-full" title="Phone not available"><Phone size={18} /></div>
+                    <div className="disabled-btn" title="Phone not available"><Phone size={18} /></div>
                   )}
-                  <button onClick={() => copyToClipboard(doc.phone)} className="text-gray-700 bg-gray-100 p-2 rounded-full hover:bg-gray-200" title="Copy phone">
+                  <button onClick={() => copyToClipboard(doc.phone)} className="action-btn copy-btn" title="Copy phone">
                     <Copy size={16} />
                   </button>
-                  <button onClick={() => toggleExpand(doc.id)} className="text-gray-700 bg-gray-100 p-2 rounded-full hover:bg-gray-200" title="Details">
+                  <button onClick={() => toggleExpand(doc.id)} className="action-btn details-btn" title="Details">
                     {expanded[doc.id] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                   </button>
                 </div>
               </div>
 
               {expanded[doc.id] && (
-                <div className="mt-4 text-sm text-gray-700 space-y-2">
-                  <div className="flex items-start space-x-2">
-                    <MapPin size={16} className="mt-1 text-yellow-500" />
+                <div className="doctor-details">
+                  <div className="detail-item">
+                    <MapPin size={16} className="detail-icon" />
                     <div>{doc.address}</div>
                   </div>
                   {doc.phone && (
-                    <div className="flex items-start space-x-2">
-                      <Phone size={16} className="mt-1 text-yellow-500" />
-                      <div className="font-medium">{doc.phone}</div>
+                    <div className="detail-item">
+                      <Phone size={16} className="detail-icon" />
+                      <div className="detail-phone">{doc.phone}</div>
                     </div>
                   )}
                 </div>
               )}
 
-              <div className="mt-4 flex items-center justify-between">
-                <div className="text-sm text-gray-600">{doc.phone ? <span className="font-medium">{doc.phone}</span> : <span className="italic">Phone not listed</span>}</div>
-                <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700">Book</button>
+              <div className="doctor-card-footer">
+                <div className="footer-phone">
+                  {doc.phone ? <span className="phone-number">{doc.phone}</span> : <span className="no-phone">Phone not listed</span>}
+                </div>
+                <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="book-btn">Book</button>
               </div>
             </div>
           ))}

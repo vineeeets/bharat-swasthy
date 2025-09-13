@@ -1,6 +1,7 @@
 // Services Section
 import { Mail, Phone, MapPin, Clock, Menu, X, Calendar, User, MessageSquare, Copy, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
+import '../styles/components/services.css';
 
 // Inline transcription of the handwritten labs (lightly normalized)
 const labs = [
@@ -82,64 +83,63 @@ const Services = () => {
     };
 
     return (
-        <section id="services" className="py-20 bg-white">
-            <div className="container mx-auto px-4 md:px-8">
+        <section id="services">
+            <div className="services-container">
 
                         {/* Removed quick-access clinicians — use the Doctors page for clinicians/specialists */}
 
                         {/* Subscription Plans */}
-                        <div className="mb-10">
-                            <div className="text-center mb-6">
-                                <h3 className="text-xl font-semibold">Subscription Plans</h3>
-                                <p className="text-gray-600">Choose a plan for family care and priority services.</p>
+                        <div className="subscription-plans">
+                            <div className="plans-header">
+                                <h3>Subscription Plans</h3>
+                                <p>Choose a plan for family care and priority services.</p>
                             </div>
 
-                            <div className="grid md:grid-cols-3 gap-6 px-2">
+                            <div className="plans-grid">
                                 {subscriptionPlans.map(plan => {
                                     const isSelected = selectedPlan === plan.id;
                                     return (
-                                        <div key={plan.id} className={`relative bg-white p-6 rounded-2xl border ${isSelected ? 'border-yellow-400 shadow-xl scale-105' : 'border-transparent shadow'} transform transition-all duration-300 hover:scale-105`}>
-                                            <div className="flex items-center justify-between">
+                                        <div key={plan.id} className={`plan-card ${isSelected ? 'selected' : ''}`}>
+                                            <div className="plan-card-header">
                                                 <div>
-                                                    <div className="text-3xl font-bold">₹{plan.price}</div>
-                                                    <div className="text-sm text-gray-500">per {plan.period}</div>
+                                                    <div className="plan-price">₹{plan.price}</div>
+                                                    <div className="plan-period">per {plan.period}</div>
                                                 </div>
-                                                <div className="flex items-center space-x-2">
-                                                    {isSelected ? <div className="text-green-600 bg-green-50 p-2 rounded-full"><Check size={18} /></div> : <div className="text-gray-300 p-2 rounded-full" />}
+                                                <div>
+                                                    {isSelected ? <div className="plan-selected-icon"><Check size={18} /></div> : <div />}
                                                 </div>
                                             </div>
-                                            <div className="mt-4 text-sm text-gray-700">{plan.members}</div>
-                                            <ul className="mt-4 text-sm text-gray-600 space-y-1">
-                                                {plan.perks.map((p, i) => <li key={i} className="flex items-center"><span className="w-2 h-2 bg-yellow-400 rounded-full mr-3" />{p}</li>)}
+                                            <div className="plan-members">{plan.members}</div>
+                                            <ul className="plan-perks">
+                                                {plan.perks.map((p, i) => <li key={i} className="perk-item"><span className="perk-bullet" />{p}</li>)}
                                             </ul>
-                                            <div className="mt-6 flex items-center justify-between">
-                                                <button onClick={() => selectPlan(plan.id)} className={`px-4 py-2 rounded-full font-semibold transition ${isSelected ? 'bg-green-600 text-white hover:scale-105' : 'bg-red-600 text-white hover:bg-red-700'}`}>
+                                            <div className="plan-footer">
+                                                <button onClick={() => selectPlan(plan.id)} className={`select-plan-btn ${isSelected ? 'selected' : 'not-selected'}`}>
                                                     {isSelected ? 'Selected' : 'Select Plan'}
                                                 </button>
-                                                <button onClick={proceedToBook} className="text-sm text-gray-500 underline">Proceed</button>
+                                                <button onClick={proceedToBook} className="proceed-btn">Proceed</button>
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
                         </div>
-                <div className="text-center mb-6">
-                    <span className="text-red-600 font-semibold">DIAGNOSTIC LABS</span>
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-2">Local Labs & Imaging Centers</h2>
-                    <p className="text-gray-600 mt-2">Search labs by name, location or specialty. Tap a phone number to call or copy it.</p>
+                <div className="labs-header">
+                    <span className="sub-title">DIAGNOSTIC LABS</span>
+                    <h2 className="title">Local Labs & Imaging Centers</h2>
+                    <p>Search labs by name, location or specialty. Tap a phone number to call or copy it.</p>
                 </div>
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-                    <div className="flex-1">
+                        <div className="labs-filters">
+                    <div className="search-input">
                         <input
                             type="search"
                             placeholder="Search labs, location or specialty..."
                             value={query}
                             onChange={e => setQuery(e.target.value)}
-                            className="w-full p-3 rounded-lg bg-gray-100 border-2 border-transparent focus:border-yellow-400 outline-none"
                         />
                     </div>
-                    <div className="w-full md:w-64">
-                        <select value={specialtyFilter} onChange={e => setSpecialtyFilter(e.target.value)} className="w-full p-3 rounded-lg bg-gray-100">
+                    <div className="specialty-filter">
+                        <select value={specialtyFilter} onChange={e => setSpecialtyFilter(e.target.value)}>
                             {specialties.map(s => (
                                 <option key={s} value={s}>{s === 'all' ? 'All Specialties' : s}</option>
                             ))}
@@ -147,53 +147,55 @@ const Services = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="labs-grid">
                     {filtered.length === 0 && (
-                        <div className="col-span-full text-center text-gray-500 py-12">No labs found for the current search/filter.</div>
+                        <div className="no-labs">No labs found for the current search/filter.</div>
                     )}
 
                     {filtered.map(lab => (
-                        <div key={lab.id} className="bg-gray-50 p-4 rounded-2xl shadow hover:shadow-lg transition transform hover:-translate-y-1">
-                            <div className="flex items-start justify-between">
+                        <div key={lab.id} className="lab-card">
+                            <div className="lab-card-header">
                                 <div>
-                                    <h3 className="text-lg font-bold">{lab.name}</h3>
-                                    <p className="text-sm text-gray-600">{lab.specialties.join(' • ')}</p>
+                                    <h3>{lab.name}</h3>
+                                    <p>{lab.specialties.join(' • ')}</p>
                                 </div>
-                                <div className="flex items-center space-x-2">
+                                <div className="lab-actions">
                                     {lab.phone ? (
-                                        <a href={`tel:${lab.phone}`} className="text-red-600 bg-red-50 p-3 rounded-lg hover:bg-red-100" title={`Call ${lab.phone}`}>
-                                            <Phone size={18} />
+                                        <a href={`tel:${lab.phone}`} className="lab-phone-btn" title={`Call ${lab.phone}`}>
+                                            <Phone size={18} className="green-icon" />
                                         </a>
                                     ) : (
-                                        <div className="text-gray-400 p-3 rounded-lg" title="Phone not available"><Phone size={18} /></div>
+                                        <div className="lab-disabled-btn" title="Phone not available"><Phone size={18} /></div>
                                     )}
-                                    <button onClick={() => copyToClipboard(lab.phone)} className="text-gray-700 bg-gray-100 p-3 rounded-lg hover:bg-gray-200" title="Copy phone">
+                                    <button onClick={() => copyToClipboard(lab.phone)} className="lab-copy-btn" title="Copy phone">
                                         <Copy size={16} />
                                     </button>
-                                    <button onClick={() => toggleExpand(lab.id)} className="text-gray-700 bg-gray-100 p-2 rounded-full hover:bg-gray-200" title="Details">
+                                    <button onClick={() => toggleExpand(lab.id)} className="lab-details-btn" title="Details">
                                         {expanded[lab.id] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                                     </button>
                                 </div>
                             </div>
 
                             {expanded[lab.id] && (
-                                <div className="mt-4 text-sm text-gray-700 space-y-2">
-                                    <div className="flex items-start space-x-2">
-                                        <MapPin size={16} className="mt-1 text-yellow-500" />
+                                <div className="lab-details">
+                                    <div className="lab-detail-item">
+                                        <MapPin size={16} className="lab-detail-icon" />
                                         <div>{lab.location}</div>
                                     </div>
                                     {lab.owner && (
-                                        <div className="flex items-start space-x-2">
-                                            <User size={16} className="mt-1 text-yellow-500" />
+                                        <div className="lab-detail-item">
+                                            <User size={16} className="lab-detail-icon" />
                                             <div>{lab.owner}</div>
                                         </div>
                                     )}
                                 </div>
                             )}
 
-                            <div className="mt-4 flex items-center justify-between">
-                                <div className="text-sm text-gray-600">{lab.phone ? <span className="font-medium">{lab.phone}</span> : <span className="italic">Phone not listed</span>}</div>
-                                <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700">Book</button>
+                            <div className="lab-card-footer">
+                                <div className="footer-phone">
+                                    {lab.phone ? <span className="phone-number">{lab.phone}</span> : <span className="no-phone">Phone not listed</span>}
+                                </div>
+                                <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="book-btn">Book</button>
                             </div>
                         </div>
                     ))}
